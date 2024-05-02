@@ -39,7 +39,7 @@ It works by creating MongoDB models, and then using javascript routes and Mongoo
 
 Use this project by following the installation steps listed above and viewing your local server at port 3001 with a software like Insomnia. You can view the database in different ways, add to it, change it, and delete things from it using only requests.
 
-Video Demonstrating Installation and Usage: (XXX)
+Video Demonstrating Installation and Usage: https://drive.google.com/file/d/10iL_BS0qA7fQaFqXDCswtJoBXtDrulAs/view?usp=sharing
 
 Use Case Example: An aspiring entrepeuner wants to create the newest social media platform. This would give them a good base to start from.
 
