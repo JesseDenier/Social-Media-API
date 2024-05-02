@@ -1,4 +1,4 @@
-// All of this follows /api.
+// All of this follows /api/users.
 
 const router = require("express").Router();
 const {

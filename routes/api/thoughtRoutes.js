@@ -1,4 +1,4 @@
-// All of this follows /api.
+// All of this follows /api/thoughts.
 
 const router = require("express").Router();
 const {
