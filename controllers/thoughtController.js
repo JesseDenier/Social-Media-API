@@ -35,6 +35,7 @@ module.exports = {
           "userId": "5edff358a0fcb779aa7b118b"
         }
       */
+      console.log(thoughtData.createdAt);
       res.json(thoughtData);
     } catch (err) {
       res.status(500).json(err);
