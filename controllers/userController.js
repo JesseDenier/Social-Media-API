@@ -1,17 +1,19 @@
-const { user } = require("../models");
+const { User } = require("../models");
 
 module.exports = {
+  // Gets all users.
   async getUsers(req, res) {
     try {
-      const users = await user.find();
+      const users = await User.find();
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
     }
   },
+  // Gets one user based on the id in the url.
   async getSingleUser(req, res) {
     try {
-      const user = await user.findOne({ _id: req.params.userId });
+      const user = await User.findOne({ _id: req.params.userId });
       if (!user) {
         return res.status(404).json({ message: "No user with that ID" });
       }
@@ -20,9 +22,10 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Creates a new user.
   async createUser(req, res) {
     try {
-      const userData = await user.create(req.body);
+      const userData = await User.create(req.body);
       /* Example Data
         {
             "username": "lernantino",
@@ -34,9 +37,10 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Updates one user based on the id in the url.
   async updateUser(req, res) {
     try {
-      const updatedUser = await user.findOneAndUpdate(
+      const updatedUser = await User.findOneAndUpdate(
         { _id: req.params.userId },
         req.body,
         { new: true }
@@ -55,9 +59,10 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Deleted one user based on the id in the url.
   async deleteUser(req, res) {
     try {
-      const deletedUser = await user.findOneAndDelete({
+      const deletedUser = await User.findOneAndDelete({
         _id: req.params.userId,
       });
       if (!deletedUser) {
