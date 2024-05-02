@@ -1,4 +1,5 @@
 const { Schema, Types, model } = require("mongoose");
+const { formatDate } = require("date-fns");
 
 // Defines the shape for the "child" reaction subdocument.
 const reactionSchema = new Schema({
@@ -14,9 +15,10 @@ const reactionSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now, //TODO: Format this on query.
+    default: Date.now,
+    get: (createdAt) => formatDate(createdAt, "MMMM d, yyyy 'at' h:mma"),
   },
-  username: { type: String, required: true }, //TODO: Relate this to the user that created it.
+  username: { type: String, required: true },
 });
 
 // Defines the shape for the "parent" thought document.
@@ -30,9 +32,10 @@ const thoughtSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now, //TODO: Format this on query.
+      default: Date.now,
+      get: (createdAt) => formatDate(createdAt, "MMMM d, yyyy 'at' h:mma"),
     },
-    username: { type: String, required: true }, //TODO: Relate this to the user that created it.
+    username: { type: String, required: true },
     reactions: [
       {
         type: Schema.Types.ObjectId,
@@ -41,9 +44,13 @@ const thoughtSchema = new Schema(
     ],
   },
   {
-    // Includes virtuals in response.
+    // Includes virtuals in response and force the date to be converted.
     toJSON: {
       virtuals: true,
+      transform: (doc, ret) => {
+        ret.createdAt = formatDate(ret.createdAt, "MMMM d, yyyy 'at' h:mma");
+        return ret;
+      },
     },
     id: false,
   }
