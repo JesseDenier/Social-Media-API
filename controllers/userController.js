@@ -75,6 +75,65 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Creates a new friend for a user based on both ids in the url.
+  async createFriend(req, res) {
+    try {
+      const user = await User.findById(req.params.userId);
+      const friendId = req.params.friendId;
+      // Checks if the user exists.
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      // Checks if the friendId is the same as the userId.
+      if (user._id.toString() === friendId) {
+        return res
+          .status(400)
+          .json({ message: "Cannot add yourself as a friend" });
+      }
+      // Checks if the friend already exists in the user's friend list.
+      if (user.friends.includes(friendId)) {
+        return res.status(400).json({ message: "Friend already exists" });
+      }
+      // Adds the friendId to the user's friends array.
+      user.friends.push(friendId);
+      await user.save();
+      // Returns user with new friend or an error.
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  // Deleted one friend from a user based on both ids in the url.
+  //TODO: Make this work by finding one user with the first url id, and then deleting the user with the second url id from their friends array.
+  async deleteFriend(req, res) {
+    try {
+      res.json({ message: "Friend deleted successfully" });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  // Deletes one friend from a user based on both ids in the url.
+  async deleteFriend(req, res) {
+    try {
+      const user = await User.findById(req.params.userId);
+      const friendId = req.params.friendId;
+      // Checks if the user exists.
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      // Checks if the friend exists in the user's friend list.
+      if (!user.friends.includes(friendId)) {
+        return res.status(400).json({ message: "Friend not found" });
+      }
+      // Removes the friendId from the user's friends array.
+      user.friends = user.friends.filter(
+        (friend) => friend.toString() !== friendId
+      );
+      await user.save();
+      // Returns user without friend or an error.
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
-
-//TODO: Add Post and Delete route for user's friend list.

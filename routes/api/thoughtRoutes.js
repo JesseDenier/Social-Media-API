@@ -1,3 +1,5 @@
+// All of this follows /api.
+
 const router = require("express").Router();
 const {
   getSingleThought,
