@@ -27,7 +27,8 @@ module.exports = {
         {
             "username": "lernantino",
             "email": "lernantino@gmail.com"
-        }*/
+        }
+      */
       res.json(userData);
     } catch (err) {
       res.status(500).json(err);
@@ -44,7 +45,8 @@ module.exports = {
         {
             "username": "lernantino",
             "email": "lernantino@gmail.com"
-        }*/
+        }
+      */
       if (!updatedUser) {
         return res.status(404).json({ message: "No user with that ID" });
       }

@@ -31,7 +31,8 @@ module.exports = {
           "thoughtText": "Here's a cool thought...",
           "username": "lernantino",
           "userId": "5edff358a0fcb779aa7b118b"
-        }*/
+        }
+      */
       res.json(thoughtData);
     } catch (err) {
       res.status(500).json(err);
@@ -50,7 +51,8 @@ module.exports = {
           "thoughtText": "Here's a cool thought...",
           "username": "lernantino",
           "userId": "5edff358a0fcb779aa7b118b"
-        }*/
+        }
+      */
       if (!updatedThought) {
         return res.status(404).json({ message: "No thought with that ID" });
       }
