@@ -81,17 +81,20 @@ module.exports = {
   // Creates a new reaction for a thought based on the id.
   async createReaction(req, res) {
     try {
+      // Sets variable thought equal to the full thought associated with the id in the url.
       const thought = await Thought.findById(req.params.thoughtId);
-      const reactionId = new Types.ObjectId(); // Generates a unique reactionId.
-      const { reactionText, username } = req.body; // Extract necessary fields from request body
+      // Sets variable reactionId equal to a unique generated objectId.
+      const reactionId = new Types.ObjectId();
+      // Extracts and properly sets variables from the request body.
+      const { reactionText, username } = req.body;
       /* Example Data
           {
             "reactionText": "I agree with this thought!",
             "username": "example_user"
           }
         */
-      // Builds the newReaction object.
-      const newReaction = {
+      // Builds the full reaction object using the above variables.
+      const reaction = {
         reactionId,
         reactionText,
         username,
@@ -103,8 +106,8 @@ module.exports = {
       // Adds the reactionId to the thought's reaction array.
       thought.reactions.push(reactionId);
       await thought.save();
-      // Returns thought with new reaction or an error.
-      res.json(thought);
+      // Returns thought with new reaction and the new reaction or an error.
+      res.json({ thought, reaction });
     } catch (err) {
       res.status(500).json(err);
     }
