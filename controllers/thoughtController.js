@@ -103,8 +103,12 @@ module.exports = {
       if (!thought) {
         return res.status(404).json({ message: "Thought not found" });
       }
-      // Adds the reactionId to the thought's reaction array.
-      thought.reactions.push(reactionId);
+      // Adds the reaction to the thought's reactions array.
+      const updatedThought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: reaction } },
+        { new: true }
+      );
       await thought.save();
       // Returns thought with new reaction and the new reaction or an error.
       res.json({ thought, reaction });
@@ -115,22 +119,23 @@ module.exports = {
   // Deletes one reaction from a thought based on both ids in the url.
   async deleteReaction(req, res) {
     try {
-      console.log("Starting the deleteReaction route.");
       const thought = await Thought.findById(req.params.thoughtId);
-      console.log("thought =" + thought);
       const reactionId = req.params.reactionId;
-      console.log("reactionId =" + reactionId);
       // Checks if the thought exists.
       if (!thought) {
         return res.status(404).json({ message: "Thought not found" });
       }
       // Checks if the reaction exists in the thought's reactions array.
-      if (!thought.reactions.includes(reactionId)) {
+      if (
+        !thought.reactions.some((reaction) =>
+          reaction.reactionId.equals(reactionId)
+        )
+      ) {
         return res.status(400).json({ message: "Reaction not found" });
       }
       // Removes the reactionId from the thoughts's reactions array.
       thought.reactions = thought.reactions.filter(
-        (reaction) => reaction.toString() !== reactionId
+        (reaction) => !reaction.reactionId.equals(reactionId)
       );
       await thought.save();
       // Returns thought without reaction or an error.

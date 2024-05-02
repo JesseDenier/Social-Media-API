@@ -36,12 +36,8 @@ const thoughtSchema = new Schema(
       get: (createdAt) => formatDate(createdAt, "MMMM d, yyyy 'at' h:mma"),
     },
     username: { type: String, required: true },
-    reactions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Reaction",
-      },
-    ],
+    // Allows full reaction objects to be stored in the thought.reactions array.
+    reactions: [reactionSchema],
   },
   {
     // Includes virtuals in response and force the date to be converted.
