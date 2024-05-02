@@ -77,6 +77,59 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+  // Creates a new reaction for a thought based on the id.
+  async createReaction(req, res) {
+    try {
+      const thought = await Thought.findById(req.params.thoughtId);
+      const reactionId = new Types.ObjectId(); // Generates a unique reactionId.
+      const { reactionText, username } = req.body; // Extract necessary fields from request body
+      /* Example Data
+          {
+            "reactionText": "I agree with this thought!",
+            "username": "example_user"
+          }
+        */
+      // Builds the newReaction object.
+      const newReaction = {
+        reactionId,
+        reactionText,
+        username,
+      };
+      // Checks if the thought exists.
+      if (!thought) {
+        return res.status(404).json({ message: "Thought not found" });
+      }
+      // Adds the reactionId to the thought's reaction array.
+      thought.reactions.push(newReaction);
+      await thought.save();
+      // Returns thought with new reaction or an error.
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  // Deletes one friend from a user based on both ids in the url.
+  async deleteReaction(req, res) {
+    try {
+      const thought = await Thought.findById(req.params.thoughtId);
+      const reactionId = req.params.reactionId;
+      // Checks if the thought exists.
+      if (!thought) {
+        return res.status(404).json({ message: "Thought not found" });
+      }
+      // Checks if the reaction exists in the thought's reactions array.
+      if (!thought.reaction.includes(reactionId)) {
+        return res.status(400).json({ message: "Reaction not found" });
+      }
+      // Removes the reactionId from the thoughts's reactions array.
+      thought.reactions = thought.reactions.filter(
+        (reaction) => reaction.toString() !== reactionId
+      );
+      await thought.save();
+      // Returns thought without reaction or an error.
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
-
-//TODO: Add Post and Delete route for thought's reaction list.
