@@ -1,4 +1,6 @@
-const user = require("./user");
-const thought = require("./thought");
+// This file acts as a center point for all other models. Importing them and exporting them from one central location.
 
-module.exports = { user, thought };
+const User = require("./user");
+const Thought = require("./thought");
+
+module.exports = { User, Thought };

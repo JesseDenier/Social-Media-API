@@ -1,5 +1,4 @@
-const { Schema, Types, model } = require("mongoose");
-const thoughtSchema = require("./thought");
+const { Schema, model } = require("mongoose");
 
 // Defines the shape for the user document.
 const userSchema = new Schema(
@@ -19,13 +18,13 @@ const userSchema = new Schema(
     thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "thought",
+        ref: "Thought",
       },
     ],
     friends: [
       {
         type: Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
       },
     ],
   },
@@ -43,7 +42,6 @@ userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
-// Initializes the user model.
-const user = model("user", userSchema);
-
-module.exports = user;
+// Initializes and exports the user model.
+const User = model("User", userSchema);
+module.exports = User;
